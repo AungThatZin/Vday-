@@ -515,6 +515,11 @@
       z-index: 50;
       border: 3px solid #ffe2f0;
       cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .music-player:hover {
+      transform: scale(1.05);
     }
 
     #musicToggle {
@@ -559,6 +564,37 @@
       0% { opacity: 0; transform: translateY(-30px); }
       100% { opacity: 1; transform: translateY(0); }
     }
+
+    #surpriseNote, #moodMessage, #secretMessage {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 1.2rem;
+      border-radius: 30px;
+      border: 3px solid #ff9bb6;
+      margin-top: 1rem;
+      box-shadow: 0 5px 15px rgba(255, 105, 150, 0.3);
+      font-size: 1.2rem;
+      line-height: 1.5;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    #surpriseNote {
+      background: linear-gradient(135deg, #fff5f8, #ffe2f0);
+      border: 3px dashed #ff6f91;
+    }
+    
+    #progressFill {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      color: white;
+      font-weight: bold;
+      padding-right: 10px;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
@@ -567,16 +603,13 @@
 
   <!-- Music Player Button -->
   <div class="music-player" id="musicPlayer">
-    <button id="musicToggle"><i class="fas fa-play"></i> <span>Play Our Song</span> <i class="fas fa-heart"></i></button>
+    <button id="musicToggle"><i class="fas fa-play"></i> <span>A Thousand Years</span> <i class="fas fa-heart"></i></button>
   </div>
-
-  <!-- Hidden YouTube iframe for audio -->
-  <div id="youtube-player" style="display: none;"></div>
 
   <div class="container">
     <!-- Hero Section -->
     <div class="hero">
-      <h1>Happy Valentine's Day,ပါ Bby❤️</h1>
+      <h1>Happy Valentine's Day, ပါ Bby❤️</h1>
       <div class="subtitle">You are my favorite story.</div>
     </div>
 
@@ -591,7 +624,7 @@
       <div id="typewriterMessage"></div>
     </div>
 
-    <!-- NEW: Together Day to Marriage Section -->
+    <!-- Together Day to Marriage Section -->
     <div class="journey-card">
       <div class="journey-title">💒 Our Journey to Marriage 💒</div>
       
@@ -627,7 +660,7 @@
           <div class="stat-label">Days to Go</div>
         </div>
         <div class="stat-box">
-          <div class="stat-value" id="completionDate">2025</div>
+          <div class="stat-value" id="completionDate">2031</div>
           <div class="stat-label">Est. Wedding</div>
         </div>
       </div>
@@ -639,7 +672,7 @@
 
     <!-- Interactive Cards Grid -->
     <div class="interactive-grid">
-      <!-- Surprise Button Card (Enhanced) -->
+      <!-- Surprise Button Card -->
       <div class="card" id="surpriseCard">
         <i class="fas fa-gift"></i>
         <h3>Click for Surprise 💖</h3>
@@ -752,480 +785,478 @@
     <img class="modal-content" id="modalImage">
   </div>
 
-  <!-- YouTube API Script -->
-  <script src="https://www.youtube.com/iframe_api"></script>
+<script>
+(function() {
+  // ===== A THOUSAND YEARS - CHRISTINA PERRI =====
+  let musicPlaying = false;
+  const audio = new Audio();
   
-  <script>
-    (function() {
-      // ===== YOUTUBE MUSIC PLAYER SETUP =====
-      let player;
-      let musicPlaying = false;
-      let playerReady = false;
-      
-      // YouTube video ID from the link: https://youtu.be/nZLHNy-K9lw
-      const videoId = 'nZLHNy-K9lw';
-      
-      // Create YouTube player when API is ready
-      window.onYouTubeIframeAPIReady = function() {
-        player = new YT.Player('youtube-player', {
-          height: '0',
-          width: '0',
-          videoId: videoId,
-          playerVars: {
-            'autoplay': 0,
-            'playsinline': 1,
-            'controls': 0,
-            'disablekb': 1,
-            'enablejsapi': 1,
-            'fs': 0,
-            'iv_load_policy': 3,
-            'loop': 1,
-            'modestbranding': 1,
-            'playlist': videoId,
-            'rel': 0
-          },
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange,
-            'onError': onPlayerError
-          }
-        });
-      };
-
-      function onPlayerReady(event) {
-        playerReady = true;
+  // Local audio file
+  audio.src = 'audio/audio.mp3';
+  audio.loop = true;
+  audio.preload = 'auto';
+  
+  // ===== FIXED AUTOPLAY WITH USER INTERACTION FALLBACK =====
+  function initAudio() {
+    // First, try to play silently (will be blocked but we try)
+    let playPromise = audio.play();
+    
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        // Autoplay started! (rare)
+        musicPlaying = true;
         updateButtonUI();
-      }
-
-      function onPlayerStateChange(event) {
-        if (event.data === YT.PlayerState.PLAYING) {
-          musicPlaying = true;
-        } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-          musicPlaying = false;
-        }
-        updateButtonUI();
-      }
-
-      function onPlayerError(event) {
-        console.log('YouTube player error:', event.data);
-      }
-
-      function toggleMusic() {
-        if (!playerReady) return;
-        if (musicPlaying) {
-          player.pauseVideo();
-        } else {
-          player.playVideo();
-        }
-      }
-
-      function updateButtonUI() {
-        const toggleBtn = document.getElementById('musicToggle');
-        if (musicPlaying) {
-          toggleBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Pause Song</span> <i class="fas fa-heart"></i>';
-        } else {
-          toggleBtn.innerHTML = '<i class="fas fa-play"></i> <span>Play Our Song</span> <i class="fas fa-heart"></i>';
-        }
-      }
-
-      // ===== FLOATING HEARTS CANVAS =====
-      const canvas = document.getElementById('heartCanvas');
-      const ctx = canvas.getContext('2d');
-      let width, height;
-      let hearts = [];
-
-      function initHearts() {
-        hearts = [];
-        for (let i = 0; i < 30; i++) {
-          hearts.push({
-            x: Math.random() * width,
-            y: Math.random() * height,
-            size: 10 + Math.random() * 20,
-            speedY: 0.3 + Math.random() * 1.5,
-            speedX: (Math.random() - 0.5) * 0.2,
-            opacity: 0.3 + Math.random() * 0.5,
-            color: `hsl(${340 + Math.random() * 30}, 80%, 70%)`,
-          });
-        }
-      }
-
-      function drawHearts() {
-        ctx.clearRect(0, 0, width, height);
-        hearts.forEach(h => {
-          ctx.globalAlpha = h.opacity;
-          ctx.fillStyle = h.color;
-          ctx.font = `${h.size}px "Segoe UI Emoji", "Arial", sans-serif`;
-          ctx.fillText('❤️', h.x, h.y);
-          
-          h.y -= h.speedY;
-          h.x += h.speedX;
-          
-          if (h.y < -30) {
-            h.y = height + 20;
-            h.x = Math.random() * width;
-          }
-        });
-        requestAnimationFrame(drawHearts);
-      }
-
-      function resizeCanvas() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-        initHearts();
-      }
-
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
-      drawHearts();
-
-      // ===== GOOD MORNING / GOOD NIGHT GREETING =====
-      function updateGreeting() {
-        const hour = new Date().getHours();
-        const greetingEl = document.getElementById('greetingMessage');
-        const timeGreetingEl = document.getElementById('timeBasedGreeting');
+        console.log('✅ Audio started automatically');
+      }).catch(error => {
+        // Autoplay blocked - this is expected
+        console.log('❌ Autoplay blocked:', error);
         
-        if (hour < 12) {
-          greetingEl.innerHTML = '🌅 Good Morning, My Love!';
-          timeGreetingEl.innerHTML = 'Hope you have a beautiful day ahead.';
-        } else if (hour < 18) {
-          greetingEl.innerHTML = '☀️ Good Afternoon, Sweetheart!';
-          timeGreetingEl.innerHTML = 'Thinking of you always.';
-        } else {
-          greetingEl.innerHTML = '🌙 Good Night, My Darling!';
-          timeGreetingEl.innerHTML = 'Dream of us. Sweet dreams.';
-        }
-      }
-      updateGreeting();
-
-      // ===== TYPEWRITER EFFECT WITH DAILY MESSAGES =====
-      const dailyLoveMessages = [
-        "Every moment with you is like a beautiful dream I never want to wake up from.",
-        "You are the reason I believe in forever. My heart is yours, always.",
-        "In your eyes, I found my home. In your heart, I found my peace.",
-        "You're the first thought in my morning and the last wish in my night.",
-        "Loving you is the easiest thing I've ever done. You're my soulmate.",
-        "Distance means so little when you mean so much. You're always in my heart.",
-        "You make my heart smile every single day. Thank you for being you.",
-        "I fall in love with you a little more every single day."
-      ];
-
-      const typewriterEl = document.getElementById('typewriterMessage');
-      let messageIndex = new Date().getDate() % dailyLoveMessages.length;
-      let charIndex = 0;
-      
-      function typeWriter() {
-        const message = dailyLoveMessages[messageIndex];
-        if (charIndex < message.length) {
-          typewriterEl.innerHTML = message.substring(0, charIndex + 1) + '<span class="typewriter-cursor">|</span>';
-          charIndex++;
-          setTimeout(typeWriter, 50);
-        } else {
-          typewriterEl.innerHTML = message + '<span class="typewriter-cursor">|</span>';
-        }
-      }
-      typeWriter();
-
-      // ===== TOGETHER DAY TO MARRIAGE CALCULATIONS =====
-      // Set your together day (CHANGE THIS TO YOUR ACTUAL DATE)
-      const togetherDate = new Date(2025, 11, 5); // February 12, 2023
-      
-      // Set your target wedding date (CHANGE THIS TO YOUR PLANNED DATE)
-      const weddingDate = new Date(2031, 5, 15); // June 15, 2025
-      
-      function updateJourneyToMarriage() {
-        const now = new Date();
+        // Show a subtle hint that music is ready
+        console.log('Click anywhere to start music');
         
-        // Days together so far
-        const diffTogetherMs = now - togetherDate;
-        const diffTogetherDays = Math.floor(diffTogetherMs / (1000 * 60 * 60 * 24));
+        // We'll wait for ANY user interaction to start
+        const startAudioOnInteraction = function() {
+          audio.play().then(() => {
+            musicPlaying = true;
+            updateButtonUI();
+            console.log('✅ Audio started after user interaction');
+            
+            // Remove all listeners after successful play
+            document.body.removeEventListener('click', startAudioOnInteraction);
+            document.body.removeEventListener('touchstart', startAudioOnInteraction);
+            document.body.removeEventListener('keydown', startAudioOnInteraction);
+          }).catch(e => console.log('Still failed:', e));
+        };
         
-        // Total journey days (together to wedding)
-        const totalJourneyMs = weddingDate - togetherDate;
-        const totalJourneyDays = Math.floor(totalJourneyMs / (1000 * 60 * 60 * 24));
+        // Listen for any user interaction
+        document.body.addEventListener('click', startAudioOnInteraction, { once: true });
+        document.body.addEventListener('touchstart', startAudioOnInteraction, { once: true });
+        document.body.addEventListener('keydown', startAudioOnInteraction, { once: true });
         
-        // Days remaining until wedding
-        const daysLeftMs = weddingDate - now;
-        const daysLeft = Math.floor(daysLeftMs / (1000 * 60 * 60 * 24));
-        
-        // Progress percentage
-        let progressPercent = 0;
-        if (daysLeft > 0) {
-          progressPercent = Math.min(100, Math.floor((diffTogetherDays / totalJourneyDays) * 100));
-        } else {
-          progressPercent = 100;
-        }
-        
-        // Update displays
-        document.getElementById('togetherDays').innerText = diffTogetherDays.toLocaleString();
-        document.getElementById('counterDisplay').innerText = diffTogetherDays + ' days';
-        document.getElementById('progressPercent').innerText = progressPercent + '%';
-        document.getElementById('daysRemaining').innerText = daysLeft > 0 ? daysLeft.toLocaleString() : '0';
-        
-        // Update progress bar
-        const progressFill = document.getElementById('progressFill');
-        progressFill.style.width = progressPercent + '%';
-        progressFill.innerText = progressPercent + '%';
-        
-        // Update marriage message based on progress
-        const marriageMsg = document.getElementById('marriageMessage');
-        if (progressPercent >= 100) {
-          marriageMsg.innerHTML = "💍 WE'RE READY FOR FOREVER! 💍";
-        } else if (progressPercent >= 75) {
-          marriageMsg.innerHTML = "💕 So close to forever! Getting ready to say 'I do'...";
-        } else if (progressPercent >= 50) {
-          marriageMsg.innerHTML = "💗 Halfway there! Our love grows stronger every day";
-        } else if (progressPercent >= 25) {
-          marriageMsg.innerHTML = "💖 Building our future together, one day at a time";
-        } else {
-          marriageMsg.innerHTML = "🌟 Every day brings us closer to our forever";
-        }
-        
-        // Update estimated wedding year display
-        document.getElementById('completionDate').innerText = weddingDate.getFullYear();
-      }
-
-      // Update immediately and every minute
-      updateJourneyToMarriage();
-      setInterval(updateJourneyToMarriage, 60000);
-
-      // ===== DAILY MESSAGE =====
-      const dailyMessages = [
-        "You're the best thing that ever happened to me.",
-        "I choose you, today and every day.",
-        "You're my favorite hello and hardest goodbye.",
-        "Every love story is beautiful, but ours is my favorite.",
-        "You're the piece of me I never knew was missing."
-      ];
-      document.getElementById('dailyMessage').innerText = 
-        dailyMessages[new Date().getDate() % dailyMessages.length];
-
-      // ===== DAILY ROMANTIC TASK =====
-      const tasks = [
-        "ဒီနေ့ Tasks က vc or Video rc ပို့ပေးပါ 💌",
-        "Plan a surprise date night 🌙",
-        "Write a short love poem ✍️",
-        "Cook something special together 🍝",
-        "Watch the sunset and think of us 🌅",
-        "Share 3 things you love about her 💕",
-        "Plan a future adventure together 🗺️"
-      ];
-      document.getElementById('dailyTask').innerText = 
-        tasks[new Date().getDate() % tasks.length];
-
-      // ===== ENHANCED SURPRISE CARD =====
-      const surpriseCard = document.getElementById('surpriseCard');
-      const surpriseNote = document.getElementById('surpriseNote');
-      
-      const surpriseMessages = [
-        "💖 Marrige life ထိ သွားမယ်လို့ စိတ်ကူးခဲ့တာ bby ကိုပဲ .",
-        "💝 မြင်လိုက်ရရုံခနလေးနဲ့ တစ်သတ်လုံး ဆွဲလမ်းသွားခဲ့တာ ကိုယ်တိုင် အံြသ မိတယ်  ",
-        "💗 ကို့နှလုံးသားကို အုပ်စိုးတဲ့ Queen က BBy ပဲ အဲ့ကြောင့် နူးညံတဲ့ အမိန့်တော်ကို နာခံဖို့ အသင့်ပါ My queen.",
-        "💓 တစ်နေ့ နေရောင်ခြည်တွေ မလင်းတဲ့တစ်နေ့ ကိုနဲ့ bby နဲ့ ဝေးမဲ့တစ်နေ့.",
-        "💕 တစ်လောကလုံးနဲ့ ကိုတစ်ယောက်ထဲလား ဘဝနဲ့ရင်းပြီး bby ကိုပြိုင်ချစ်ရဲသူ ရှိနိုင်မလား ? မထင်ပါဘူး",
-        "💘 you kiss me on the mouth and love me like a sailor.",
-        "💖 I fall in love with you a little more every single day. You're my everything."
-      ];
-      
-      let surpriseClickCount = 0;
-      
-      surpriseCard.addEventListener('click', function(e) {
-        if (e.target.tagName !== 'I' && e.target.tagName !== 'H3') {
-          surpriseClickCount++;
-          
-          if (surpriseClickCount === 1) {
-            surpriseNote.innerHTML = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
-          } else if (surpriseClickCount === 2) {
-            surpriseNote.innerHTML = "🎁 You found a special surprise! I love you to the moon and back! 🌙";
-            createHeartBurst(20);
-          } else if (surpriseClickCount === 3) {
-            surpriseNote.innerHTML = "💎 SUPER SECRET: You're the love of my life and I can't wait to marry you! 💎";
-            createHeartBurst(30);
-            createConfetti();
-          } else {
-            surpriseNote.innerHTML = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
-          }
-          
-          surpriseNote.style.display = 'block';
-          surpriseNote.style.animation = 'fadeIn 0.5s';
-          createHeartBurst(12);
-        }
-      });
-
-      // Mood Support Messages
-      const moodMessages = [
-        "I'm here for you, always. You're never alone.",
-        "You are stronger than you know, and I believe in you.",
-        "Close your eyes, take a deep breath. I'm holding your hand.",
-        "This feeling will pass. My love for you won't.",
-        "You're perfect exactly as you are. Never forget that."
-      ];
-      
-      document.getElementById('moodCard').addEventListener('click', function() {
-        const moodMsg = document.getElementById('moodMessage');
-        moodMsg.style.display = 'block';
-        moodMsg.innerText = moodMessages[Math.floor(Math.random() * moodMessages.length)];
-      });
-
-      // Secret Messages
-      const secrets = [
-        "I knew I loved you from the moment I saw you smile.",
-        "You're the reason I believe in soulmates.",
-        "I want to grow old and wrinkly with you.",
-        "My favorite place is anywhere you are."
-      ];
-      
-      document.getElementById('secretCard').addEventListener('click', function() {
-        const secretMsg = document.getElementById('secretMessage');
-        secretMsg.style.display = 'block';
-        secretMsg.innerText = secrets[Math.floor(Math.random() * secrets.length)];
-      });
-
-      // ===== PHOTO GALLERY LIGHTBOX =====
-      const modal = document.getElementById('lightboxModal');
-      const modalImg = document.getElementById('modalImage');
-      const closeModal = document.getElementById('closeModal');
-      
-      document.querySelectorAll('.gallery-item').forEach(item => {
-        item.addEventListener('click', function(e) {
-          modal.style.display = 'flex';
-          modalImg.src = this.querySelector('img').src;
-          createHeartBurst(8);
-        });
-      });
-
-      closeModal.onclick = () => modal.style.display = 'none';
-      window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
-
-      // ===== QUIZ =====
-      document.querySelectorAll('.quiz-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const result = document.getElementById('quizResult');
-          if (this.dataset.answer === 'correct') {
-            result.innerHTML = '🎉 Correct! You know me so well! ❤️';
-            result.style.color = '#b33b66';
-            createHeartBurst(15);
-          } else {
-            result.innerHTML = '💔 Not quite, but I love you anyway! Try again!';
-            result.style.color = '#7e4a5e';
+        // Also try to play when page becomes visible (some browsers allow this)
+        document.addEventListener('visibilitychange', function onVisible() {
+          if (!document.hidden) {
+            audio.play().then(() => {
+              musicPlaying = true;
+              updateButtonUI();
+              document.removeEventListener('visibilitychange', onVisible);
+            }).catch(() => {});
           }
         });
       });
+    }
+  }
 
-      // ===== MEMORY TIMELINE ANIMATION =====
-      const memoryCards = document.querySelectorAll('.memory-card');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+  // Initialize audio when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAudio);
+  } else {
+    initAudio();
+  }
+
+  function toggleMusic() {
+    if (musicPlaying) {
+      audio.pause();
+      musicPlaying = false;
+    } else {
+      audio.play().catch(e => {
+        console.log('Play failed:', e);
+        alert('Click the page to start the music');
+      });
+      musicPlaying = true;
+    }
+    updateButtonUI();
+  }
+
+  function updateButtonUI() {
+    const toggleBtn = document.getElementById('musicToggle');
+    if (toggleBtn) {
+      if (musicPlaying) {
+        toggleBtn.innerHTML = '<i class="fas fa-pause"></i> <span>A Thousand Years</span> <i class="fas fa-heart"></i>';
+      } else {
+        toggleBtn.innerHTML = '<i class="fas fa-play"></i> <span>A Thousand Years</span> <i class="fas fa-heart"></i>';
+      }
+    }
+  }
+
+  // ===== FLOATING HEARTS CANVAS =====
+  const canvas = document.getElementById('heartCanvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let hearts = [];
+
+    function initHearts() {
+      hearts = [];
+      for (let i = 0; i < 30; i++) {
+        hearts.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: 10 + Math.random() * 20,
+          speedY: 0.3 + Math.random() * 1.5,
+          speedX: (Math.random() - 0.5) * 0.2,
+          opacity: 0.3 + Math.random() * 0.5,
+          color: `hsl(${340 + Math.random() * 30}, 80%, 70%)`,
         });
-      }, { threshold: 0.3 });
+      }
+    }
 
-      memoryCards.forEach(card => observer.observe(card));
+    function drawHearts() {
+      ctx.clearRect(0, 0, width, height);
+      hearts.forEach(h => {
+        ctx.globalAlpha = h.opacity;
+        ctx.fillStyle = h.color;
+        ctx.font = `${h.size}px "Segoe UI Emoji", "Arial", sans-serif`;
+        ctx.fillText('❤️', h.x, h.y);
+        
+        h.y -= h.speedY;
+        h.x += h.speedX;
+        
+        if (h.y < -30) {
+          h.y = height + 20;
+          h.x = Math.random() * width;
+        }
+      });
+      requestAnimationFrame(drawHearts);
+    }
 
-      // ===== MUSIC PLAYER BUTTON =====
-      const toggleBtn = document.getElementById('musicToggle');
-      const musicPlayer = document.getElementById('musicPlayer');
-      
-      musicPlayer.addEventListener('click', toggleMusic);
+    function resizeCanvas() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      initHearts();
+    }
 
-      // ===== HEART BURST FUNCTION =====
-      function createHeartBurst(count = 12) {
-        for (let i = 0; i < count; i++) {
-          setTimeout(() => {
-            const heart = document.createElement('div');
-            heart.innerHTML = ['❤️','💖','💘','💝','💗','💓','💕'][Math.floor(Math.random()*7)];
-            heart.style.position = 'fixed';
-            heart.style.left = (window.innerWidth/2) + (Math.random()*250-125) + 'px';
-            heart.style.top = (window.innerHeight/2) + (Math.random()*250-125) + 'px';
-            heart.style.fontSize = (1.5 + Math.random()*2.5) + 'rem';
-            heart.style.zIndex = '999';
-            heart.style.transition = 'all 1.2s ease-out';
-            heart.style.pointerEvents = 'none';
-            heart.style.textShadow = '0 0 10px rgba(255,255,255,0.8)';
-            document.body.appendChild(heart);
-            
-            setTimeout(() => {
-              heart.style.transform = `translate(${Math.random()*300-150}px, -300px) rotate(${Math.random()*180-90}deg)`;
-              heart.style.opacity = '0';
-            }, 20);
-            
-            setTimeout(() => heart.remove(), 1400);
-          }, i * 40);
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    drawHearts();
+  }
+
+  // ===== GOOD MORNING / GOOD NIGHT GREETING =====
+  function updateGreeting() {
+    const hour = new Date().getHours();
+    const greetingEl = document.getElementById('greetingMessage');
+    const timeGreetingEl = document.getElementById('timeBasedGreeting');
+    
+    if (greetingEl && timeGreetingEl) {
+      if (hour < 12) {
+        greetingEl.innerHTML = '🌅 Good Morning, My Love!';
+        timeGreetingEl.innerHTML = 'Hope you have a beautiful day ahead.';
+      } else if (hour < 18) {
+        greetingEl.innerHTML = '☀️ Good Afternoon, Sweetheart!';
+        timeGreetingEl.innerHTML = 'Thinking of you always.';
+      } else {
+        greetingEl.innerHTML = '🌙 Good Night, My Darling!';
+        timeGreetingEl.innerHTML = 'Dream of us. Sweet dreams.';
+      }
+    }
+  }
+  updateGreeting();
+
+  // ===== TYPEWRITER EFFECT =====
+  const typewriterEl = document.getElementById('typewriterMessage');
+  if (typewriterEl) {
+    const dailyLoveMessages = [
+      "Every moment with you is like a beautiful dream I never want to wake up from.",
+      "You are the reason I believe in forever. My heart is yours, always.",
+      "In your eyes, I found my home. In your heart, I found my peace.",
+      "You're the first thought in my morning and the last wish in my night.",
+      "Loving you is the easiest thing I've ever done. You're my soulmate.",
+      "Distance means so little when you mean so much. You're always in my heart.",
+      "You make my heart smile every single day. Thank you for being you.",
+      "I fall in love with you a little more every single day."
+    ];
+
+    let messageIndex = new Date().getDate() % dailyLoveMessages.length;
+    let charIndex = 0;
+    
+    function typeWriter() {
+      const message = dailyLoveMessages[messageIndex];
+      if (charIndex < message.length) {
+        typewriterEl.innerHTML = message.substring(0, charIndex + 1) + '<span class="typewriter-cursor">|</span>';
+        charIndex++;
+        setTimeout(typeWriter, 50);
+      } else {
+        typewriterEl.innerHTML = message + '<span class="typewriter-cursor">|</span>';
+      }
+    }
+    typeWriter();
+  }
+
+  // ===== TOGETHER DAY TO MARRIAGE CALCULATIONS =====
+  const togetherDate = new Date(2025, 11, 5);
+  const weddingDate = new Date(2031, 5, 15);
+  
+  function updateJourneyToMarriage() {
+    const now = new Date();
+    
+    const diffTogetherMs = now - togetherDate;
+    const diffTogetherDays = Math.floor(diffTogetherMs / (1000 * 60 * 60 * 24));
+    
+    const totalJourneyMs = weddingDate - togetherDate;
+    const totalJourneyDays = Math.floor(totalJourneyMs / (1000 * 60 * 60 * 24));
+    
+    const daysLeftMs = weddingDate - now;
+    const daysLeft = Math.floor(daysLeftMs / (1000 * 60 * 60 * 24));
+    
+    let progressPercent = 0;
+    if (daysLeft > 0) {
+      progressPercent = Math.min(100, Math.floor((diffTogetherDays / totalJourneyDays) * 100));
+    } else {
+      progressPercent = 100;
+    }
+    
+    const togetherDaysEl = document.getElementById('togetherDays');
+    const counterDisplayEl = document.getElementById('counterDisplay');
+    const progressPercentEl = document.getElementById('progressPercent');
+    const daysRemainingEl = document.getElementById('daysRemaining');
+    const progressFill = document.getElementById('progressFill');
+    const marriageMsg = document.getElementById('marriageMessage');
+    const completionDateEl = document.getElementById('completionDate');
+    
+    if (togetherDaysEl) togetherDaysEl.innerText = diffTogetherDays > 0 ? diffTogetherDays.toLocaleString() : '0';
+    if (counterDisplayEl) counterDisplayEl.innerText = (diffTogetherDays > 0 ? diffTogetherDays : '0') + ' days';
+    if (progressPercentEl) progressPercentEl.innerText = progressPercent + '%';
+    if (daysRemainingEl) daysRemainingEl.innerText = daysLeft > 0 ? daysLeft.toLocaleString() : '0';
+    
+    if (progressFill) {
+      progressFill.style.width = progressPercent + '%';
+      progressFill.innerText = progressPercent + '%';
+    }
+    
+    if (marriageMsg) {
+      if (progressPercent >= 100) {
+        marriageMsg.innerHTML = "💍 WE'RE READY FOR FOREVER! 💍";
+      } else if (progressPercent >= 75) {
+        marriageMsg.innerHTML = "💕 So close to forever! Getting ready to say 'I do'...";
+      } else if (progressPercent >= 50) {
+        marriageMsg.innerHTML = "💗 Halfway there! Our love grows stronger every day";
+      } else if (progressPercent >= 25) {
+        marriageMsg.innerHTML = "💖 Building our future together, one day at a time";
+      } else {
+        marriageMsg.innerHTML = "🌟 Every day brings us closer to our forever";
+      }
+    }
+    
+    if (completionDateEl) completionDateEl.innerText = weddingDate.getFullYear();
+  }
+
+  updateJourneyToMarriage();
+  setInterval(updateJourneyToMarriage, 60000);
+
+  // ===== DAILY MESSAGE =====
+  const dailyMessageEl = document.getElementById('dailyMessage');
+  if (dailyMessageEl) {
+    const dailyMessages = [
+      "You're the best thing that ever happened to me.",
+      "I choose you, today and every day.",
+      "You're my favorite hello and hardest goodbye.",
+      "Every love story is beautiful, but ours is my favorite.",
+      "You're the piece of me I never knew was missing."
+    ];
+    dailyMessageEl.innerText = dailyMessages[new Date().getDate() % dailyMessages.length];
+  }
+
+  // ===== DAILY ROMANTIC TASK =====
+  const dailyTaskEl = document.getElementById('dailyTask');
+  if (dailyTaskEl) {
+    const tasks = [
+      "ဒီနေ့ Tasks က vc or Video rc ပို့ပေးပါ 💌 ပြီးရင် စိတ်ကောက်ပြေပေးရပါမယ်",
+      "Plan a surprise date night 🌙",
+      "Write a short love poem ✍️",
+      "Cook something special together 🍝",
+      "Watch the sunset and think of us 🌅",
+      "Share 3 things you love about her 💕",
+      "Plan a future adventure together 🗺️"
+    ];
+    dailyTaskEl.innerText = tasks[new Date().getDate() % tasks.length];
+  }
+
+  // ===== SURPRISE CARD =====
+  const surpriseCard = document.getElementById('surpriseCard');
+  const surpriseNote = document.getElementById('surpriseNote');
+  
+  if (surpriseCard && surpriseNote) {
+    const surpriseMessages = [
+      "💖 Marrige life ထိ သွားမယ်လို့ စိတ်ကူးခဲ့တာ bby ကိုပဲ .",
+      "💝 မြင်လိုက်ရရုံခနလေးနဲ့ တစ်သတ်လုံး ဆွဲလမ်းသွားခဲ့တာ ကိုယ်တိုင် အံြသ မိတယ်  ",
+      "💗 ကို့နှလုံးသားကို အုပ်စိုးတဲ့ Queen က BBy ပဲ အဲ့ကြောင့် နူးညံတဲ့ အမိန့်တော်ကို နာခံဖို့ အသင့်ပါ My queen.",
+      "💓 တစ်နေ့ နေရောင်ခြည်တွေ မလင်းတဲ့တစ်နေ့ ကိုနဲ့ bby နဲ့ ဝေးမဲ့တစ်နေ့.",
+      "💕 တစ်လောကလုံးနဲ့ ကိုတစ်ယောက်ထဲလား ဘဝနဲ့ရင်းပြီး bby ကိုပြိုင်ချစ်ရဲသူ ရှိနိုင်မလား ? မထင်ပါဘူး",
+      "💘 အချိန်ခနလေးအတွင်းမှာ bby လဲ အသက်ကြီးလာပြီး ကိုတို့ စောင့်နေတဲ့အချိန်ကို ရောက်လာမှာပါ စောင့်နေတဲ့ အတောတွင်းကိုပဲ fighting ပါလို့",
+      "💖 Married life ထိ သွားနိုင်ဖို့ fighting ပါ အချစ်ရေ."
+    ];
+    
+    let surpriseClickCount = 0;
+    
+    surpriseCard.addEventListener('click', function(e) {
+      if (e.target.tagName !== 'I' && e.target.tagName !== 'H3') {
+        surpriseClickCount++;
+        
+        if (surpriseClickCount === 1) {
+          surpriseNote.innerHTML = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
+        } else if (surpriseClickCount === 2) {
+          surpriseNote.innerHTML = "Married life ထိ သွားနိုင်ဖို့ fighting ပါ အချစ်ရေ";
+          createHeartBurst(20);
+        } else if (surpriseClickCount === 3) {
+          surpriseNote.innerHTML = "I Love You For a 100000000 Year.";
+          createHeartBurst(30);
+          createConfetti();
+        } else {
+          surpriseNote.innerHTML = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
+        }
+        
+        surpriseNote.style.display = 'block';
+        surpriseNote.style.animation = 'fadeIn 0.5s';
+        createHeartBurst(12);
+      }
+    });
+  }
+
+  // Mood Support Messages
+  const moodCard = document.getElementById('moodCard');
+  const moodMessage = document.getElementById('moodMessage');
+  
+  if (moodCard && moodMessage) {
+    const moodMessages = [
+      "I'm here for you, always. You're never alone.",
+      "You are stronger than you know, and I believe in you.",
+      "Close your eyes, take a deep breath. I'm holding your hand.",
+      "This feeling will pass. My love for you won't.",
+      "You're perfect exactly as you are. Never forget that."
+    ];
+    
+    moodCard.addEventListener('click', function() {
+      moodMessage.style.display = 'block';
+      moodMessage.innerText = moodMessages[Math.floor(Math.random() * moodMessages.length)];
+    });
+  }
+
+  // Secret Messages
+  const secretCard = document.getElementById('secretCard');
+  const secretMessage = document.getElementById('secretMessage');
+  
+  if (secretCard && secretMessage) {
+    const secrets = [
+      "Married life ထိ သွားနိုင်ဖို့ fighting ပါ အချစ်ရေ",
+      "အချိန်ခနလေးအတွင်းမှာ bby လဲ အသက်ကြီးလာပြီး ကိုတို့ စောင့်နေတဲ့အချိန်ကို ရောက်လာမှာပါ စောင့်နေတဲ့ အတောတွင်းကိုပဲ fighting ပါလို့ ",
+      "I want to grow old and wrinkly with you.",
+      "My favorite place is anywhere you are."
+    ];
+    
+    secretCard.addEventListener('click', function() {
+      secretMessage.style.display = 'block';
+      secretMessage.innerText = secrets[Math.floor(Math.random() * secrets.length)];
+    });
+  }
+
+  // ===== PHOTO GALLERY LIGHTBOX =====
+  const modal = document.getElementById('lightboxModal');
+  const modalImg = document.getElementById('modalImage');
+  const closeModal = document.getElementById('closeModal');
+  
+  if (modal && modalImg && closeModal) {
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        modal.style.display = 'flex';
+        modalImg.src = this.querySelector('img').src;
+        createHeartBurst(8);
+      });
+    });
+
+    closeModal.onclick = () => modal.style.display = 'none';
+    window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+  }
+
+  // ===== QUIZ =====
+  document.querySelectorAll('.quiz-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const result = document.getElementById('quizResult');
+      if (result) {
+        if (this.dataset.answer === 'correct') {
+          result.innerHTML = '🎉 Correct! You know me so well! ❤️';
+          result.style.color = '#b33b66';
+          createHeartBurst(15);
+        } else {
+          result.innerHTML = '💔 Not quite, but I love you anyway! Try again!';
+          result.style.color = '#7e4a5e';
         }
       }
+    });
+  });
 
-      // ===== CONFETTI FUNCTION =====
-      function createConfetti() {
-        for (let i = 0; i < 30; i++) {
-          setTimeout(() => {
-            const confetti = document.createElement('div');
-            confetti.innerHTML = ['✨','🎉','🎊','💖','🌸'][Math.floor(Math.random()*5)];
-            confetti.style.position = 'fixed';
-            confetti.style.left = Math.random() * 100 + '%';
-            confetti.style.top = '-50px';
-            confetti.style.fontSize = (1.5 + Math.random()*2) + 'rem';
-            confetti.style.zIndex = '999';
-            confetti.style.transition = 'all 1.5s ease-out';
-            confetti.style.pointerEvents = 'none';
-            document.body.appendChild(confetti);
-            
-            setTimeout(() => {
-              confetti.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random()*360}deg)`;
-              confetti.style.opacity = '0';
-            }, 20);
-            
-            setTimeout(() => confetti.remove(), 1600);
-          }, i * 50);
-        }
+  // ===== MEMORY TIMELINE ANIMATION =====
+  const memoryCards = document.querySelectorAll('.memory-card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
       }
+    });
+  }, { threshold: 0.3 });
 
-      console.log('❤️ Valentine page loaded with Journey to Marriage feature!');
-    })();
-  </script>
+  memoryCards.forEach(card => observer.observe(card));
 
-  <style>
-    #surpriseNote, #moodMessage, #secretMessage {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 1.2rem;
-      border-radius: 30px;
-      border: 3px solid #ff9bb6;
-      margin-top: 1rem;
-      box-shadow: 0 5px 15px rgba(255, 105, 150, 0.3);
-      font-size: 1.2rem;
-      line-height: 1.5;
+  // ===== MUSIC PLAYER BUTTON =====
+  const musicPlayer = document.getElementById('musicPlayer');
+  if (musicPlayer) {
+    musicPlayer.addEventListener('click', toggleMusic);
+  }
+
+  // ===== HEART BURST FUNCTION =====
+  function createHeartBurst(count = 12) {
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const heart = document.createElement('div');
+        heart.innerHTML = ['❤️','💖','💘','💝','💗','💓','💕'][Math.floor(Math.random()*7)];
+        heart.style.position = 'fixed';
+        heart.style.left = (window.innerWidth/2) + (Math.random()*250-125) + 'px';
+        heart.style.top = (window.innerHeight/2) + (Math.random()*250-125) + 'px';
+        heart.style.fontSize = (1.5 + Math.random()*2.5) + 'rem';
+        heart.style.zIndex = '999';
+        heart.style.transition = 'all 1.2s ease-out';
+        heart.style.pointerEvents = 'none';
+        heart.style.textShadow = '0 0 10px rgba(255,255,255,0.8)';
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+          heart.style.transform = `translate(${Math.random()*300-150}px, -300px) rotate(${Math.random()*180-90}deg)`;
+          heart.style.opacity = '0';
+        }, 20);
+        
+        setTimeout(() => heart.remove(), 1400);
+      }, i * 40);
     }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+  }
+
+  // ===== CONFETTI FUNCTION =====
+  function createConfetti() {
+    for (let i = 0; i < 30; i++) {
+      setTimeout(() => {
+        const confetti = document.createElement('div');
+        confetti.innerHTML = ['✨','🎉','🎊','💖','🌸'][Math.floor(Math.random()*5)];
+        confetti.style.position = 'fixed';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.top = '-50px';
+        confetti.style.fontSize = (1.5 + Math.random()*2) + 'rem';
+        confetti.style.zIndex = '999';
+        confetti.style.transition = 'all 1.5s ease-out';
+        confetti.style.pointerEvents = 'none';
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => {
+          confetti.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random()*360}deg)`;
+          confetti.style.opacity = '0';
+        }, 20);
+        
+        setTimeout(() => confetti.remove(), 1600);
+      }, i * 50);
     }
-    
-    #surpriseNote {
-      background: linear-gradient(135deg, #fff5f8, #ffe2f0);
-      border: 3px dashed #ff6f91;
-    }
-    
-    .music-player {
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .music-player:hover {
-      transform: scale(1.05);
-    }
-    
-    #progressFill {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      color: white;
-      font-weight: bold;
-      padding-right: 10px;
-      font-size: 0.9rem;
-    }
-  </style>
+  }
+
+  console.log('❤️ Valentine page loaded - click anywhere to start music');
+})();
+</script>
 </body>
 </html>
