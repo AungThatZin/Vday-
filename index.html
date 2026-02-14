@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Our Love Story · Valentine's Day</title>
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
+      color: #4a2e38;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ===== FLOATING HEARTS BACKGROUND ===== */
+    #heartCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ===== MAIN CONTAINER ===== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      border-radius: 60px 60px 30px 30px;
+      margin-bottom: 3rem;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 20px 30px rgba(255, 120, 160, 0.2);
+      animation: fadeInDown 1.2s ease;
+    }
+
+    .hero h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(3rem, 12vw, 5.5rem);
+      color: #d43f6b;
+      text-shadow: 4px 4px 0 #ffc1d0, 6px 6px 0 rgba(255, 255, 255, 0.8);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .hero .subtitle {
+      font-size: 1.8rem;
+      font-weight: 300;
+      background: rgba(255, 255, 255, 0.7);
+      display: inline-block;
+      padding: 0.8rem 2.5rem;
+      border-radius: 60px;
+      color: #a53860;
+      box-shadow: 0 8px 15px #ffb0c8;
+      border: 3px solid white;
+      margin-top: 1rem;
+    }
+
+    /* ===== GREETING SECTION ===== */
+    .greeting-card {
+      background: rgba(255, 228, 240, 0.7);
+      backdrop-filter: blur(5px);
+      border-radius: 50px;
+      padding: 1.5rem 2rem;
+      margin: 2rem 0;
+      text-align: center;
+      border: 3px solid white;
+      box-shadow: 0 10px 0 #e88aa8;
+    }
+
+    #greetingMessage {
+      font-size: 2.2rem;
+      font-family: 'Dancing Script', cursive;
+      color: #b53b62;
+    }
+
+    #timeBasedGreeting {
+      font-size: 1.3rem;
+      margin-top: 0.5rem;
+      color: #7e4a5e;
+    }
+
+    /* ===== LOVE MESSAGE WITH TYPEWRITER ===== */
+    .love-message-container {
+      background: rgba(255, 245, 250, 0.9);
+      backdrop-filter: blur(6px);
+      border-radius: 40px 40px 40px 12px;
+      padding: 2rem;
+      margin: 2.5rem 0;
+      box-shadow: 0 25px 30px -10px #faa7b9, 0 8px 0 #d86d91;
+      border: 3px solid white;
+    }
+
+    #typewriterMessage {
+      font-size: 1.8rem;
+      font-weight: 500;
+      min-height: 6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #3b202b;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 4px;
+      margin-left: 8px;
+      background: #c73f64;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; } 50% { opacity: 0; }
+    }
+
+    /* ===== TOGETHER DAY TO MARRIAGE SECTION ===== */
+    .journey-card {
+      background: rgba(255, 235, 245, 0.9);
+      backdrop-filter: blur(8px);
+      border-radius: 60px;
+      padding: 2.5rem 2rem;
+      margin: 3rem 0;
+      border: 4px solid white;
+      box-shadow: 0 20px 0 #d86d91, 0 20px 30px #faa7c0;
+    }
+
+    .journey-title {
+      font-size: 2.8rem;
+      font-family: 'Dancing Script', cursive;
+      color: #b84366;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .together-display {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .together-number {
+      font-size: 5rem;
+      font-weight: 700;
+      color: #c63e64;
+      text-shadow: 3px 3px 0 white;
+      line-height: 1.2;
+    }
+
+    .together-label {
+      font-size: 1.8rem;
+      color: #9f3e5c;
+    }
+
+    .progress-container {
+      margin: 2.5rem 0;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.3rem;
+      color: #832e4d;
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 35px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50px;
+      border: 3px solid white;
+      overflow: hidden;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff9bb6, #ff4d7a);
+      border-radius: 50px;
+      width: 0%;
+      transition: width 1.5s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 15px;
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .milestone-markers {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.8rem;
+      padding: 0 10px;
+    }
+
+    .milestone {
+      font-size: 1rem;
+      color: #a53860;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .journey-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .stat-box {
+      background: white;
+      border-radius: 40px;
+      padding: 1.2rem 1.8rem;
+      border: 3px solid #ff9bb6;
+      text-align: center;
+      min-width: 150px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #d43f6b;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      color: #7e4a5e;
+    }
+
+    .marriage-quote {
+      text-align: center;
+      font-size: 1.4rem;
+      color: #b53b62;
+      margin-top: 1.5rem;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    /* ===== INTERACTIVE GRID ===== */
+    .interactive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin: 3rem 0;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border: 3px solid white;
+      box-shadow: 0 15px 0 #e89bb0, 0 15px 25px #fbb0c8;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 0 #d86d91, 0 20px 30px #faa0bc;
+    }
+
+    .card i {
+      font-size: 3rem;
+      color: #d43f6b;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #a53860;
+    }
+
+    .card p {
+      font-size: 1.3rem;
+      color: #5a3a44;
+      line-height: 1.5;
+    }
+
+    .card .revealed-content {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: #b33b66;
+      font-weight: 600;
+    }
+
+    /* ===== PHOTO GALLERY ===== */
+    .section-title {
+      font-size: 2.8rem;
+      font-family: 'Dancing Script', cursive;
+      color: #b84366;
+      margin: 3rem 0 2rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.7);
+      display: inline-block;
+      padding: 0.5rem 3rem;
+      border-radius: 60px;
+      border: 3px solid white;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.8rem;
+      margin: 2rem 0 3rem;
+    }
+
+    .gallery-item {
+      border-radius: 30px 12px 30px 12px;
+      overflow: hidden;
+      aspect-ratio: 1/1;
+      box-shadow: 0 15px 0 #f78aa8, 0 18px 25px #feb6cb;
+      transition: 0.3s;
+      cursor: pointer;
+      border: 4px solid white;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05) rotate(2deg);
+      box-shadow: 0 12px 0 #f56292, 0 22px 30px #fbaac2;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.2);
+    }
+
+    /* Lightbox Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      max-width: 85%;
+      max-height: 85%;
+      border-radius: 40px;
+      border: 8px solid white;
+      box-shadow: 0 0 50px #ffa5c0;
+      animation: zoomIn 0.3s;
+    }
+
+    .close {
+      position: absolute;
+      top: 30px; right: 40px;
+      color: white;
+      font-size: 4rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .close:hover { color: #ffb6c1; transform: scale(1.2); }
+
+    @keyframes zoomIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    /* ===== MEMORY TIMELINE ===== */
+    .timeline {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+
+    .memory-card {
+      background: #ffd9e8;
+      border-radius: 30px 12px 30px 12px;
+      padding: 2rem 1.5rem;
+      flex: 1 1 200px;
+      text-align: center;
+      border: 4px solid white;
+      box-shadow: 0 12px 0 #e0799c;
+      transition: 0.3s;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .memory-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: 0.6s cubic-bezier(0.2, 0.9, 0.1, 1.1);
+    }
+
+    .memory-card i {
+      font-size: 3rem;
+      color: #c43f64;
+      margin-bottom: 1rem;
+    }
+
+    .memory-card h4 {
+      font-size: 1.6rem;
+      color: #832e4d;
+      margin-bottom: 0.5rem;
+    }
+
+    .memory-card p {
+      font-size: 1rem;
+      color: #5e3645;
+    }
+
+    /* ===== LOVE COUNTER ===== */
+    .love-counter-card {
+      background: #ffe2f0;
+      border-radius: 60px;
+      padding: 2rem;
+      text-align: center;
+      border: 4px solid white;
+      box-shadow: 0 15px 0 #d86d91;
+      margin: 2rem 0;
+    }
+
+    #counterDisplay {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #c63e64;
+      text-shadow: 2px 2px 0 white;
+    }
+
+    .counter-label {
+      font-size: 1.8rem;
+      color: #9f3e5c;
+    }
+
+    /* ===== QUIZ SECTION ===== */
+    .quiz-card {
+      background: #ffe0eb;
+      border-radius: 40px;
+      padding: 2rem;
+      margin: 2rem 0;
+      border: 4px solid white;
+      box-shadow: 0 15px 0 #d86d91;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .quiz-btn {
+      background: white;
+      border: 3px solid #ff9bb6;
+      padding: 1rem;
+      border-radius: 40px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.2s;
+      color: #a53860;
+      font-weight: 600;
+    }
+
+    .quiz-btn:hover {
+      background: #ffb0c8;
+      transform: scale(1.05);
+    }
+
+    #quizResult {
+      font-size: 1.4rem;
+      margin-top: 1rem;
+      color: #b33b66;
+    }
+
+    /* ===== MUSIC PLAYER ===== */
+    .music-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 60px;
+      padding: 1rem 1.8rem;
+      box-shadow: 0 8px 0 #b34d6e, 0 10px 20px #f69bb9;
+      z-index: 50;
+      border: 3px solid #ffe2f0;
+      cursor: pointer;
+    }
+
+    #musicToggle {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: #c63f64;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ===== FINAL MESSAGE ===== */
+    .final-message {
+      margin: 4rem 0 2rem;
+      font-size: 2.5rem;
+      font-family: 'Dancing Script', cursive;
+      background: #fccfdd;
+      padding: 2.5rem 2rem;
+      border-radius: 200px 30px 200px 30px;
+      border: 6px solid white;
+      text-align: center;
+      color: #942f50;
+      box-shadow: 0 20px 0 #db7598;
+      line-height: 1.4;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .container { padding: 1rem; }
+      .hero h1 { font-size: 3rem; }
+      .hero .subtitle { font-size: 1.4rem; }
+      #typewriterMessage { font-size: 1.4rem; }
+      .card p { font-size: 1.1rem; }
+      .final-message { font-size: 1.8rem; }
+      .together-number { font-size: 3.5rem; }
+      .journey-title { font-size: 2.2rem; }
+    }
+
+    @keyframes fadeInDown {
+      0% { opacity: 0; transform: translateY(-30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="heartCanvas"></canvas>
+
+  <!-- Music Player Button -->
+  <div class="music-player" id="musicPlayer">
+    <button id="musicToggle"><i class="fas fa-play"></i> <span>Play Our Song</span> <i class="fas fa-heart"></i></button>
+  </div>
+
+  <!-- Hidden YouTube iframe for audio -->
+  <div id="youtube-player" style="display: none;"></div>
+
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+      <h1>Happy Valentine's Day,ပါ Bby❤️</h1>
+      <div class="subtitle">You are my favorite story.</div>
+    </div>
+
+    <!-- Good Morning/Good Night Greeting -->
+    <div class="greeting-card">
+      <div id="greetingMessage"></div>
+      <div id="timeBasedGreeting"></div>
+    </div>
+
+    <!-- Typewriter Love Message -->
+    <div class="love-message-container">
+      <div id="typewriterMessage"></div>
+    </div>
+
+    <!-- NEW: Together Day to Marriage Section -->
+    <div class="journey-card">
+      <div class="journey-title">💒 Our Journey to Marriage 💒</div>
+      
+      <div class="together-display">
+        <div class="together-number" id="togetherDays">0</div>
+        <div class="together-label">Days Together</div>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-info">
+          <span>💕 Together Day</span>
+          <span>💍 Marriage Day</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressFill">0%</div>
+        </div>
+        <div class="milestone-markers">
+          <span class="milestone">🎉 Start</span>
+          <span class="milestone">💞 25%</span>
+          <span class="milestone">💗 50%</span>
+          <span class="milestone">💖 75%</span>
+          <span class="milestone">👰 100%</span>
+        </div>
+      </div>
+
+      <div class="journey-stats">
+        <div class="stat-box">
+          <div class="stat-value" id="progressPercent">0%</div>
+          <div class="stat-label">Progress</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="daysRemaining">0</div>
+          <div class="stat-label">Days to Go</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value" id="completionDate">2025</div>
+          <div class="stat-label">Est. Wedding</div>
+        </div>
+      </div>
+
+      <div class="marriage-quote" id="marriageMessage">
+        "Getting closer to forever every day..."
+      </div>
+    </div>
+
+    <!-- Interactive Cards Grid -->
+    <div class="interactive-grid">
+      <!-- Surprise Button Card (Enhanced) -->
+      <div class="card" id="surpriseCard">
+        <i class="fas fa-gift"></i>
+        <h3>Click for Surprise 💖</h3>
+        <p>Reveal a magical love surprise</p>
+        <div class="revealed-content" id="surpriseNote" style="display: none;"></div>
+      </div>
+
+      <!-- Daily Love Message Card -->
+      <div class="card" id="dailyMessageCard">
+        <i class="fas fa-calendar-day"></i>
+        <h3>Today's Love Note</h3>
+        <p id="dailyMessage"></p>
+      </div>
+
+      <!-- Daily Romantic Task Card -->
+      <div class="card" id="taskCard">
+        <i class="fas fa-tasks"></i>
+        <h3>Today's Romantic Task</h3>
+        <p id="dailyTask"></p>
+      </div>
+
+      <!-- Mood Support Card -->
+      <div class="card" id="moodCard">
+        <i class="fas fa-hand-holding-heart"></i>
+        <h3>Feeling Down?</h3>
+        <p>Click for comfort</p>
+        <div class="revealed-content" id="moodMessage" style="display: none;"></div>
+      </div>
+
+      <!-- Secret Love Messages Card -->
+      <div class="card" id="secretCard">
+        <i class="fas fa-lock"></i>
+        <h3>Secret Messages</h3>
+        <p>Click to reveal a secret</p>
+        <div class="revealed-content" id="secretMessage" style="display: none;"></div>
+      </div>
+    </div>
+
+    <!-- Love Counter -->
+    <div class="love-counter-card">
+      <span class="counter-label">Together for</span>
+      <div id="counterDisplay">0 days</div>
+      <span class="counter-label">of forever</span>
+    </div>
+
+    <!-- Photo Gallery -->
+    <div style="text-align: center;">
+      <span class="section-title">📸 Our Beautiful Memories 📸</span>
+    </div>
+    
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Replace with your own photos -->
+      <div class="gallery-item"><img src="photo/photo_2026-02-13_19-33-27.jpg" alt="Memory 1"></div>
+      <div class="gallery-item"><img src="photo/photo_2026-02-13_19-33-35.jpg" alt="Memory 2"></div>
+      <div class="gallery-item"><img src="photo/photo_2026-02-13_19-33-37.jpg" alt="Memory 3"></div>
+      <div class="gallery-item"><img src="photo/photo_2026-02-13_19-33-40.jpg" alt="Memory 4"></div>
+      <div class="gallery-item"><img src="photo/photo_2026-02-13_19-33-42.jpg" alt="Memory 5"></div>
+      <div class="gallery-item"><img src="photo/photo_2026-02-13_19-33-43.jpg" alt="Memory 6"></div>
+    </div>
+
+    <!-- Memory Timeline -->
+    <div style="text-align: center;">
+      <span class="section-title">💞 Our Journey 💞</span>
+    </div>
+    
+    <div class="timeline" id="timeline">
+      <div class="memory-card">
+        <i class="fas fa-comment-dots"></i>
+        <h4>First Chat</h4>
+        <p>The day our story began</p>
+      </div>
+      <div class="memory-card">
+        <i class="fas fa-calendar-check"></i>
+        <h4>First Date</h4>
+        <p>Butterflies and magic</p>
+      </div>
+      <div class="memory-card">
+        <i class="fas fa-heart-broken"></i>
+        <h4>First Fight</h4>
+        <p>We grew stronger</p>
+      </div>
+      <div class="memory-card">
+        <i class="fas fa-heart"></i>
+        <h4>Stronger Together</h4>
+        <p>Forever and always</p>
+      </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div class="quiz-card">
+      <h3 style="font-size: 2rem; color: #a53860;">💝 Guess Our First Date 💝</h3>
+      <div class="quiz-options">
+        <button class="quiz-btn" data-answer="wrong">January 14</button>
+        <button class="quiz-btn" data-answer="correct">February 12</button>
+        <button class="quiz-btn" data-answer="wrong">March 14</button>
+        <button class="quiz-btn" data-answer="wrong">December 14</button>
+      </div>
+      <div id="quizResult"></div>
+    </div>
+
+    <!-- Final Message -->
+    <div class="final-message">
+      “Today my Valentine, tomorrow my wife, forever my love.” ♾️❤️
+    </div>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div id="lightboxModal" class="modal">
+    <span class="close" id="closeModal">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+
+  <!-- YouTube API Script -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  
+  <script>
+    (function() {
+      // ===== YOUTUBE MUSIC PLAYER SETUP =====
+      let player;
+      let musicPlaying = false;
+      let playerReady = false;
+      
+      // YouTube video ID from the link: https://youtu.be/nZLHNy-K9lw
+      const videoId = 'nZLHNy-K9lw';
+      
+      // Create YouTube player when API is ready
+      window.onYouTubeIframeAPIReady = function() {
+        player = new YT.Player('youtube-player', {
+          height: '0',
+          width: '0',
+          videoId: videoId,
+          playerVars: {
+            'autoplay': 0,
+            'playsinline': 1,
+            'controls': 0,
+            'disablekb': 1,
+            'enablejsapi': 1,
+            'fs': 0,
+            'iv_load_policy': 3,
+            'loop': 1,
+            'modestbranding': 1,
+            'playlist': videoId,
+            'rel': 0
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange,
+            'onError': onPlayerError
+          }
+        });
+      };
+
+      function onPlayerReady(event) {
+        playerReady = true;
+        updateButtonUI();
+      }
+
+      function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.PLAYING) {
+          musicPlaying = true;
+        } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+          musicPlaying = false;
+        }
+        updateButtonUI();
+      }
+
+      function onPlayerError(event) {
+        console.log('YouTube player error:', event.data);
+      }
+
+      function toggleMusic() {
+        if (!playerReady) return;
+        if (musicPlaying) {
+          player.pauseVideo();
+        } else {
+          player.playVideo();
+        }
+      }
+
+      function updateButtonUI() {
+        const toggleBtn = document.getElementById('musicToggle');
+        if (musicPlaying) {
+          toggleBtn.innerHTML = '<i class="fas fa-pause"></i> <span>Pause Song</span> <i class="fas fa-heart"></i>';
+        } else {
+          toggleBtn.innerHTML = '<i class="fas fa-play"></i> <span>Play Our Song</span> <i class="fas fa-heart"></i>';
+        }
+      }
+
+      // ===== FLOATING HEARTS CANVAS =====
+      const canvas = document.getElementById('heartCanvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let hearts = [];
+
+      function initHearts() {
+        hearts = [];
+        for (let i = 0; i < 30; i++) {
+          hearts.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            size: 10 + Math.random() * 20,
+            speedY: 0.3 + Math.random() * 1.5,
+            speedX: (Math.random() - 0.5) * 0.2,
+            opacity: 0.3 + Math.random() * 0.5,
+            color: `hsl(${340 + Math.random() * 30}, 80%, 70%)`,
+          });
+        }
+      }
+
+      function drawHearts() {
+        ctx.clearRect(0, 0, width, height);
+        hearts.forEach(h => {
+          ctx.globalAlpha = h.opacity;
+          ctx.fillStyle = h.color;
+          ctx.font = `${h.size}px "Segoe UI Emoji", "Arial", sans-serif`;
+          ctx.fillText('❤️', h.x, h.y);
+          
+          h.y -= h.speedY;
+          h.x += h.speedX;
+          
+          if (h.y < -30) {
+            h.y = height + 20;
+            h.x = Math.random() * width;
+          }
+        });
+        requestAnimationFrame(drawHearts);
+      }
+
+      function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        initHearts();
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      drawHearts();
+
+      // ===== GOOD MORNING / GOOD NIGHT GREETING =====
+      function updateGreeting() {
+        const hour = new Date().getHours();
+        const greetingEl = document.getElementById('greetingMessage');
+        const timeGreetingEl = document.getElementById('timeBasedGreeting');
+        
+        if (hour < 12) {
+          greetingEl.innerHTML = '🌅 Good Morning, My Love!';
+          timeGreetingEl.innerHTML = 'Hope you have a beautiful day ahead.';
+        } else if (hour < 18) {
+          greetingEl.innerHTML = '☀️ Good Afternoon, Sweetheart!';
+          timeGreetingEl.innerHTML = 'Thinking of you always.';
+        } else {
+          greetingEl.innerHTML = '🌙 Good Night, My Darling!';
+          timeGreetingEl.innerHTML = 'Dream of us. Sweet dreams.';
+        }
+      }
+      updateGreeting();
+
+      // ===== TYPEWRITER EFFECT WITH DAILY MESSAGES =====
+      const dailyLoveMessages = [
+        "Every moment with you is like a beautiful dream I never want to wake up from.",
+        "You are the reason I believe in forever. My heart is yours, always.",
+        "In your eyes, I found my home. In your heart, I found my peace.",
+        "You're the first thought in my morning and the last wish in my night.",
+        "Loving you is the easiest thing I've ever done. You're my soulmate.",
+        "Distance means so little when you mean so much. You're always in my heart.",
+        "You make my heart smile every single day. Thank you for being you.",
+        "I fall in love with you a little more every single day."
+      ];
+
+      const typewriterEl = document.getElementById('typewriterMessage');
+      let messageIndex = new Date().getDate() % dailyLoveMessages.length;
+      let charIndex = 0;
+      
+      function typeWriter() {
+        const message = dailyLoveMessages[messageIndex];
+        if (charIndex < message.length) {
+          typewriterEl.innerHTML = message.substring(0, charIndex + 1) + '<span class="typewriter-cursor">|</span>';
+          charIndex++;
+          setTimeout(typeWriter, 50);
+        } else {
+          typewriterEl.innerHTML = message + '<span class="typewriter-cursor">|</span>';
+        }
+      }
+      typeWriter();
+
+      // ===== TOGETHER DAY TO MARRIAGE CALCULATIONS =====
+      // Set your together day (CHANGE THIS TO YOUR ACTUAL DATE)
+      const togetherDate = new Date(2025, 11, 5); // February 12, 2023
+      
+      // Set your target wedding date (CHANGE THIS TO YOUR PLANNED DATE)
+      const weddingDate = new Date(2031, 5, 15); // June 15, 2025
+      
+      function updateJourneyToMarriage() {
+        const now = new Date();
+        
+        // Days together so far
+        const diffTogetherMs = now - togetherDate;
+        const diffTogetherDays = Math.floor(diffTogetherMs / (1000 * 60 * 60 * 24));
+        
+        // Total journey days (together to wedding)
+        const totalJourneyMs = weddingDate - togetherDate;
+        const totalJourneyDays = Math.floor(totalJourneyMs / (1000 * 60 * 60 * 24));
+        
+        // Days remaining until wedding
+        const daysLeftMs = weddingDate - now;
+        const daysLeft = Math.floor(daysLeftMs / (1000 * 60 * 60 * 24));
+        
+        // Progress percentage
+        let progressPercent = 0;
+        if (daysLeft > 0) {
+          progressPercent = Math.min(100, Math.floor((diffTogetherDays / totalJourneyDays) * 100));
+        } else {
+          progressPercent = 100;
+        }
+        
+        // Update displays
+        document.getElementById('togetherDays').innerText = diffTogetherDays.toLocaleString();
+        document.getElementById('counterDisplay').innerText = diffTogetherDays + ' days';
+        document.getElementById('progressPercent').innerText = progressPercent + '%';
+        document.getElementById('daysRemaining').innerText = daysLeft > 0 ? daysLeft.toLocaleString() : '0';
+        
+        // Update progress bar
+        const progressFill = document.getElementById('progressFill');
+        progressFill.style.width = progressPercent + '%';
+        progressFill.innerText = progressPercent + '%';
+        
+        // Update marriage message based on progress
+        const marriageMsg = document.getElementById('marriageMessage');
+        if (progressPercent >= 100) {
+          marriageMsg.innerHTML = "💍 WE'RE READY FOR FOREVER! 💍";
+        } else if (progressPercent >= 75) {
+          marriageMsg.innerHTML = "💕 So close to forever! Getting ready to say 'I do'...";
+        } else if (progressPercent >= 50) {
+          marriageMsg.innerHTML = "💗 Halfway there! Our love grows stronger every day";
+        } else if (progressPercent >= 25) {
+          marriageMsg.innerHTML = "💖 Building our future together, one day at a time";
+        } else {
+          marriageMsg.innerHTML = "🌟 Every day brings us closer to our forever";
+        }
+        
+        // Update estimated wedding year display
+        document.getElementById('completionDate').innerText = weddingDate.getFullYear();
+      }
+
+      // Update immediately and every minute
+      updateJourneyToMarriage();
+      setInterval(updateJourneyToMarriage, 60000);
+
+      // ===== DAILY MESSAGE =====
+      const dailyMessages = [
+        "You're the best thing that ever happened to me.",
+        "I choose you, today and every day.",
+        "You're my favorite hello and hardest goodbye.",
+        "Every love story is beautiful, but ours is my favorite.",
+        "You're the piece of me I never knew was missing."
+      ];
+      document.getElementById('dailyMessage').innerText = 
+        dailyMessages[new Date().getDate() % dailyMessages.length];
+
+      // ===== DAILY ROMANTIC TASK =====
+      const tasks = [
+        "ဒီနေ့ Tasks က vc or Video rc ပို့ပေးပါ 💌",
+        "Plan a surprise date night 🌙",
+        "Write a short love poem ✍️",
+        "Cook something special together 🍝",
+        "Watch the sunset and think of us 🌅",
+        "Share 3 things you love about her 💕",
+        "Plan a future adventure together 🗺️"
+      ];
+      document.getElementById('dailyTask').innerText = 
+        tasks[new Date().getDate() % tasks.length];
+
+      // ===== ENHANCED SURPRISE CARD =====
+      const surpriseCard = document.getElementById('surpriseCard');
+      const surpriseNote = document.getElementById('surpriseNote');
+      
+      const surpriseMessages = [
+        "💖 Marrige life ထိ သွားမယ်လို့ စိတ်ကူးခဲ့တာ bby ကိုပဲ .",
+        "💝 မြင်လိုက်ရရုံခနလေးနဲ့ တစ်သတ်လုံး ဆွဲလမ်းသွားခဲ့တာ ကိုယ်တိုင် အံြသ မိတယ်  ",
+        "💗 ကို့နှလုံးသားကို အုပ်စိုးတဲ့ Queen က BBy ပဲ အဲ့ကြောင့် နူးညံတဲ့ အမိန့်တော်ကို နာခံဖို့ အသင့်ပါ My queen.",
+        "💓 တစ်နေ့ နေရောင်ခြည်တွေ မလင်းတဲ့တစ်နေ့ ကိုနဲ့ bby နဲ့ ဝေးမဲ့တစ်နေ့.",
+        "💕 တစ်လောကလုံးနဲ့ ကိုတစ်ယောက်ထဲလား ဘဝနဲ့ရင်းပြီး bby ကိုပြိုင်ချစ်ရဲသူ ရှိနိုင်မလား ? မထင်ပါဘူး",
+        "💘 you kiss me on the mouth and love me like a sailor.",
+        "💖 I fall in love with you a little more every single day. You're my everything."
+      ];
+      
+      let surpriseClickCount = 0;
+      
+      surpriseCard.addEventListener('click', function(e) {
+        if (e.target.tagName !== 'I' && e.target.tagName !== 'H3') {
+          surpriseClickCount++;
+          
+          if (surpriseClickCount === 1) {
+            surpriseNote.innerHTML = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
+          } else if (surpriseClickCount === 2) {
+            surpriseNote.innerHTML = "🎁 You found a special surprise! I love you to the moon and back! 🌙";
+            createHeartBurst(20);
+          } else if (surpriseClickCount === 3) {
+            surpriseNote.innerHTML = "💎 SUPER SECRET: You're the love of my life and I can't wait to marry you! 💎";
+            createHeartBurst(30);
+            createConfetti();
+          } else {
+            surpriseNote.innerHTML = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
+          }
+          
+          surpriseNote.style.display = 'block';
+          surpriseNote.style.animation = 'fadeIn 0.5s';
+          createHeartBurst(12);
+        }
+      });
+
+      // Mood Support Messages
+      const moodMessages = [
+        "I'm here for you, always. You're never alone.",
+        "You are stronger than you know, and I believe in you.",
+        "Close your eyes, take a deep breath. I'm holding your hand.",
+        "This feeling will pass. My love for you won't.",
+        "You're perfect exactly as you are. Never forget that."
+      ];
+      
+      document.getElementById('moodCard').addEventListener('click', function() {
+        const moodMsg = document.getElementById('moodMessage');
+        moodMsg.style.display = 'block';
+        moodMsg.innerText = moodMessages[Math.floor(Math.random() * moodMessages.length)];
+      });
+
+      // Secret Messages
+      const secrets = [
+        "I knew I loved you from the moment I saw you smile.",
+        "You're the reason I believe in soulmates.",
+        "I want to grow old and wrinkly with you.",
+        "My favorite place is anywhere you are."
+      ];
+      
+      document.getElementById('secretCard').addEventListener('click', function() {
+        const secretMsg = document.getElementById('secretMessage');
+        secretMsg.style.display = 'block';
+        secretMsg.innerText = secrets[Math.floor(Math.random() * secrets.length)];
+      });
+
+      // ===== PHOTO GALLERY LIGHTBOX =====
+      const modal = document.getElementById('lightboxModal');
+      const modalImg = document.getElementById('modalImage');
+      const closeModal = document.getElementById('closeModal');
+      
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+          modal.style.display = 'flex';
+          modalImg.src = this.querySelector('img').src;
+          createHeartBurst(8);
+        });
+      });
+
+      closeModal.onclick = () => modal.style.display = 'none';
+      window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
+
+      // ===== QUIZ =====
+      document.querySelectorAll('.quiz-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const result = document.getElementById('quizResult');
+          if (this.dataset.answer === 'correct') {
+            result.innerHTML = '🎉 Correct! You know me so well! ❤️';
+            result.style.color = '#b33b66';
+            createHeartBurst(15);
+          } else {
+            result.innerHTML = '💔 Not quite, but I love you anyway! Try again!';
+            result.style.color = '#7e4a5e';
+          }
+        });
+      });
+
+      // ===== MEMORY TIMELINE ANIMATION =====
+      const memoryCards = document.querySelectorAll('.memory-card');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.3 });
+
+      memoryCards.forEach(card => observer.observe(card));
+
+      // ===== MUSIC PLAYER BUTTON =====
+      const toggleBtn = document.getElementById('musicToggle');
+      const musicPlayer = document.getElementById('musicPlayer');
+      
+      musicPlayer.addEventListener('click', toggleMusic);
+
+      // ===== HEART BURST FUNCTION =====
+      function createHeartBurst(count = 12) {
+        for (let i = 0; i < count; i++) {
+          setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.innerHTML = ['❤️','💖','💘','💝','💗','💓','💕'][Math.floor(Math.random()*7)];
+            heart.style.position = 'fixed';
+            heart.style.left = (window.innerWidth/2) + (Math.random()*250-125) + 'px';
+            heart.style.top = (window.innerHeight/2) + (Math.random()*250-125) + 'px';
+            heart.style.fontSize = (1.5 + Math.random()*2.5) + 'rem';
+            heart.style.zIndex = '999';
+            heart.style.transition = 'all 1.2s ease-out';
+            heart.style.pointerEvents = 'none';
+            heart.style.textShadow = '0 0 10px rgba(255,255,255,0.8)';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+              heart.style.transform = `translate(${Math.random()*300-150}px, -300px) rotate(${Math.random()*180-90}deg)`;
+              heart.style.opacity = '0';
+            }, 20);
+            
+            setTimeout(() => heart.remove(), 1400);
+          }, i * 40);
+        }
+      }
+
+      // ===== CONFETTI FUNCTION =====
+      function createConfetti() {
+        for (let i = 0; i < 30; i++) {
+          setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.innerHTML = ['✨','🎉','🎊','💖','🌸'][Math.floor(Math.random()*5)];
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.top = '-50px';
+            confetti.style.fontSize = (1.5 + Math.random()*2) + 'rem';
+            confetti.style.zIndex = '999';
+            confetti.style.transition = 'all 1.5s ease-out';
+            confetti.style.pointerEvents = 'none';
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+              confetti.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random()*360}deg)`;
+              confetti.style.opacity = '0';
+            }, 20);
+            
+            setTimeout(() => confetti.remove(), 1600);
+          }, i * 50);
+        }
+      }
+
+      console.log('❤️ Valentine page loaded with Journey to Marriage feature!');
+    })();
+  </script>
+
+  <style>
+    #surpriseNote, #moodMessage, #secretMessage {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 1.2rem;
+      border-radius: 30px;
+      border: 3px solid #ff9bb6;
+      margin-top: 1rem;
+      box-shadow: 0 5px 15px rgba(255, 105, 150, 0.3);
+      font-size: 1.2rem;
+      line-height: 1.5;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    #surpriseNote {
+      background: linear-gradient(135deg, #fff5f8, #ffe2f0);
+      border: 3px dashed #ff6f91;
+    }
+    
+    .music-player {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .music-player:hover {
+      transform: scale(1.05);
+    }
+    
+    #progressFill {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      color: white;
+      font-weight: bold;
+      padding-right: 10px;
+      font-size: 0.9rem;
+    }
+  </style>
+</body>
+</html>
