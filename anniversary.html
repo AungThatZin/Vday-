@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>A'K · Our Journey to Forever</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #fef9f0 0%, #fff3e0 100%);
+      font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, 'Playfair Display', serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+    }
+
+    /* main card container */
+    .wedding-card {
+      max-width: 1300px;
+      width: 100%;
+      background: rgba(255, 255, 245, 0.92);
+      backdrop-filter: blur(1px);
+      border-radius: 4rem 3rem 4rem 3rem;
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.1), 0 10px 25px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    /* hero / title area */
+    .hero {
+      background: linear-gradient(135deg, #2c3e2f 0%, #1e2a21 100%);
+      padding: 2.5rem 2rem 2.2rem;
+      text-align: center;
+      color: #fef5e3;
+      border-bottom: 8px solid #e9c891;
+    }
+
+    .our-sign {
+      font-size: 4rem;
+      letter-spacing: 0.2em;
+      font-weight: 600;
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(120deg, #F7E05E, #FFD966);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .names {
+      margin-top: 0.8rem;
+      font-size: 1.5rem;
+      font-weight: 400;
+      word-break: keep-all;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .names span {
+      background: rgba(255,245,210,0.2);
+      padding: 0.3rem 1.2rem;
+      border-radius: 40px;
+      backdrop-filter: blur(2px);
+    }
+
+    .divider-heart {
+      font-size: 1.8rem;
+      margin: 0 0.5rem;
+      color: #f7d44a;
+    }
+
+    /* date ring */
+    .wedding-date-box {
+      background: #fffaf2;
+      padding: 2rem 1rem;
+      text-align: center;
+      border-bottom: 1px solid #ffe4bc;
+    }
+
+    .date-label {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: #b67e45;
+      font-weight: 500;
+    }
+
+    .big-date {
+      font-size: 2.8rem;
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+      color: #5a3e2b;
+      margin: 0.5rem 0 0;
+      word-break: keep-all;
+    }
+
+    .big-date small {
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+
+    /* countdown grid */
+    .countdown-wrapper {
+      background: #fff8ef;
+      padding: 2rem 2rem 2.2rem;
+      text-align: center;
+    }
+
+    .countdown-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      font-family: 'Playfair Display', serif;
+      color: #4a3320;
+      margin-bottom: 1.5rem;
+    }
+
+    .countdown-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .time-box {
+      background: white;
+      min-width: 110px;
+      padding: 1rem 0.5rem;
+      border-radius: 2rem;
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.05);
+      border: 1px solid #ffefcf;
+      transition: transform 0.2s;
+    }
+
+    .time-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .time-number {
+      font-size: 3rem;
+      font-weight: 800;
+      font-family: monospace;
+      color: #9b5e2c;
+      line-height: 1;
+    }
+
+    .time-unit {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #b28954;
+      margin-top: 0.3rem;
+    }
+
+    .message-area {
+      font-size: 1.2rem;
+      margin-top: 1.2rem;
+      font-style: italic;
+      background: #f9e9d3;
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      border-radius: 60px;
+      color: #7a4d29;
+    }
+
+    /* story / promise section */
+    .promise-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 2.5rem 2rem;
+      background: #fef6ea;
+      border-top: 2px dashed #e9cfaa;
+      border-bottom: 2px dashed #e9cfaa;
+    }
+
+    .notes-card {
+      flex: 1;
+      background: white;
+      border-radius: 2rem;
+      padding: 1.5rem;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.03);
+      border: 1px solid #fbe5c2;
+    }
+
+    .notes-card h3 {
+      font-size: 1.6rem;
+      color: #3b2a1e;
+      border-left: 5px solid #e2b87a;
+      padding-left: 1rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .ak-symbol {
+      font-size: 2rem;
+      font-weight: bold;
+      background: #fdf3e4;
+      display: inline-block;
+      padding: 0.2rem 1rem;
+      border-radius: 80px;
+      letter-spacing: 2px;
+      color: #b5773b;
+    }
+
+    .signature-line {
+      margin-top: 1rem;
+      font-family: 'Brush Script MT', cursive;
+      font-size: 1.5rem;
+      color: #9b6a38;
+      text-align: right;
+    }
+
+    /* moodboard / quote */
+    .affirmation {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: #fff6e8;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #5f3f23;
+    }
+
+    footer {
+      background: #e7dcc8;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+      color: #5b3f25;
+    }
+
+    @media (max-width: 650px) {
+      .hero {
+        padding: 1.5rem;
+      }
+      .our-sign {
+        font-size: 2.5rem;
+      }
+      .big-date {
+        font-size: 1.8rem;
+      }
+      .time-number {
+        font-size: 2rem;
+      }
+      .time-box {
+        min-width: 70px;
+        padding: 0.6rem 0.2rem;
+      }
+      .countdown-grid {
+        gap: 0.8rem;
+      }
+      .promise-section {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="wedding-card">
+  <div class="hero">
+    <div class="our-sign">A'K ✦</div>
+    <div class="names">
+      <span>Aung Thant Zin</span>
+      <span class="divider-heart">❤️</span>
+      <span>Khine Hsu Myat Thein</span>
+    </div>
+    <div style="margin-top: 1rem; font-size: 0.95rem; opacity: 0.9;">• our eternal bond •</div>
+  </div>
+
+  <div class="wedding-date-box">
+    <div class="date-label">🎀  wedding day  🎀</div>
+    <div class="big-date">
+      <strong>12 February 2030</strong> <small>| Tuesday</small>
+    </div>
+    <div style="margin-top: 0.5rem; font-size: 1rem;">✨ the beginning of our marriage life ✨</div>
+  </div>
+
+  <div class="countdown-wrapper">
+    <div class="countdown-title">⏳ counting down to "I do" ⏳</div>
+    <div class="countdown-grid" id="countdownContainer">
+      <div class="time-box"><div class="time-number" id="days">00</div><div class="time-unit">Days</div></div>
+      <div class="time-box"><div class="time-number" id="hours">00</div><div class="time-unit">Hours</div></div>
+      <div class="time-box"><div class="time-number" id="minutes">00</div><div class="time-unit">Minutes</div></div>
+      <div class="time-box"><div class="time-number" id="seconds">00</div><div class="time-unit">Seconds</div></div>
+    </div>
+    <div class="message-area" id="dynamicMessage">❤️ savoring every moment until forever ❤️</div>
+  </div>
+
+  <div class="promise-section">
+    <div class="notes-card">
+      <h3>📜 Our Vows</h3>
+      <p style="line-height:1.5; margin-bottom:1rem;">From this day forward, <strong>Aung Thant Zin</strong> & <strong>Khine Hsu Myat Thein</strong> walk as one. <br> 
+      We promise to nurture our garden of love, laugh through storms, and always choose each other. <br>
+      Under the sign <span class="ak-symbol">A'K</span> — our initials intertwined eternally.</p>
+      <div class="signature-line">— waiting for 12.02.2030 —</div>
+    </div>
+    <div class="notes-card">
+      <h3>🌸 The A'K story</h3>
+      <p>✨ <strong>Our sign</strong> represents unity, dreams, and a love that only grows deeper. Together we are building a future rooted in respect, joy, and compassion. <br><br>
+      We'll step into marriage life hand in hand, creating a home filled with warmth, and we'll always remember: every sunrise is better because we share it.<br>
+      💫 <em>"Two souls, one promise, one beautiful adventure."</em></p>
+    </div>
+  </div>
+
+  <div class="affirmation">
+    🌙 “True love is not about perfection, it's about growing together.” — A'K 🌟
+  </div>
+  <footer>
+    ❤️ A'K · forever begins 12 February 2030 · designed with love for our future ❤️
+  </footer>
+</div>
+
+<script>
+  (function() {
+    // TARGET DATE: 12 February 2030  (Month is 0-indexed: 1 = February)
+    // The user specified: 2030 February 12. We set exact wedding time as 00:00:00 local midnight (glorious start of marriage day)
+    // But to make the countdown feel magical, we can set the exact ceremony time 00:00:00 (start of day) 
+    // or to be more precise set at 00:00:00 local. However we allow for any timezone difference — the countdown shows remaining time until that date in local system.
+    const weddingYear = 2030;
+    const weddingMonthIndex = 1;   // February = 1 (0 = Jan)
+    const weddingDay = 12;
+
+    // We'll build a targetDate object with local time midnight (the moment the day starts)
+    // Using new Date(year, month, day) -> local timezone midnight.
+    let targetDate = new Date(weddingYear, weddingMonthIndex, weddingDay, 0, 0, 0, 0);
+
+    // Function to update the countdown elements plus dynamic message
+    function updateCountdown() {
+      const now = new Date(); // current moment in user local timezone
+      const timeDiff = targetDate.getTime() - now.getTime();
+
+      // If already married or exactly wedding day we handle gracefully
+      if (timeDiff <= 0) {
+        // wedding day has arrived or passed
+        document.getElementById('days').innerText = "00";
+        document.getElementById('hours').innerText = "00";
+        document.getElementById('minutes').innerText = "00";
+        document.getElementById('seconds').innerText = "00";
+        const msgDiv = document.getElementById('dynamicMessage');
+        if (timeDiff === 0 || (now.toDateString() === targetDate.toDateString())) {
+          msgDiv.innerHTML = "🎉 TODAY IS THE DAY! 🎉  A'K MARRIAGE BLESSINGS! 🎉";
+        } else {
+          msgDiv.innerHTML = "💞 Already married in love! Forever starts now. 💞 A'K forever!";
+        }
+        return;
+      }
+
+      // Calculate remaining units
+      const totalSeconds = Math.floor(timeDiff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      // Update DOM with leading zeros
+      document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+      document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+      document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+      document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+
+      // dynamic sweet messages based on remaining days
+      const msgDiv = document.getElementById('dynamicMessage');
+      if (days > 365) {
+        const yearsLeft = Math.floor(days / 365);
+        msgDiv.innerHTML = `🌿 ${yearsLeft} year${yearsLeft > 1 ? 's' : ''} of eager anticipation · A'K preparing a beautiful marriage life 🌿`;
+      } else if (days > 30) {
+        msgDiv.innerHTML = `🍂 ${days} days until we say "I do" — our hearts beat as one 🍂`;
+      } else if (days > 7) {
+        msgDiv.innerHTML = `✨ Less than ${Math.ceil(days/7)} weeks to forever! Our wedding plan shines bright ✨`;
+      } else if (days > 1) {
+        msgDiv.innerHTML = `🌸 Only ${days} days left, love! The magic is near · A'K's new chapter 🌸`;
+      } else if (days === 1) {
+        msgDiv.innerHTML = `💒 TOMORROW IS OUR WEDDING! The happiest day of our lives! 💒`;
+      } else if (days === 0) {
+        msgDiv.innerHTML = `💖 TODAY! A'K STEP INTO MARRIAGE LIFE! CONGRATULATIONS 💖`;
+      } else {
+        msgDiv.innerHTML = `❤️ counting each heartbeat until 12 Feb 2030 — love you, Khine Hsu Myat Thein ❤️`;
+      }
+    }
+
+    // also update message when page loads, and set interval every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    // Extra glam: add minor floating effect or dynamic background flavor? just consistent
+    // Also ensure that the target date respects that if system timezone causes misalignment? 
+    // Because we used local midnight -> it's perfect for users from all regions showing remaining days in local context.
+    // Additional safeguard: if user's device date somehow set ahead? Not needed. 
+    // Offer a manual refresh note: but it's fine.
+    // Also adding a little interactive hover / reflection.
+    
+    // we also can recalc if the wedding date is passed? We already did.
+    // Additionally, create a small blinking heart effect (simple) just to reflect specialness
+    const heartSymbol = document.querySelector('.divider-heart');
+    if(heartSymbol) {
+      setInterval(() => {
+        if(heartSymbol.style.opacity === '0.5') {
+          heartSymbol.style.opacity = '1';
+          heartSymbol.style.textShadow = '0 0 4px #ffbf69';
+        } else {
+          heartSymbol.style.opacity = '0.7';
+          heartSymbol.style.textShadow = 'none';
+        }
+      }, 800);
+    }
+    
+    // Display the sign A'K elegant dynamic greeting
+    const signEl = document.querySelector('.our-sign');
+    if(signEl) {
+      setInterval(() => {
+        // subtle shimmer
+        signEl.style.transition = 'text-shadow 0.2s';
+        signEl.style.textShadow = '0 0 2px #ffdb8e';
+        setTimeout(() => {
+          signEl.style.textShadow = '0 2px 5px rgba(0,0,0,0.1)';
+        }, 300);
+      }, 2000);
+    }
+
+    // Add a little console note for the couple
+    console.log(`✨ A'K Wedding Planner — ${weddingYear}.${weddingMonthIndex+1}.${weddingDay} — cherish your love story ✨`);
+    
+    // For perfection: ensure that Feb 12 2030 display in big date shows correct weekday (Tuesday)
+    // already hardcoded but we can verify with js and show consistent.
+    const testDate = new Date(2030, 1, 12);
+    const weekday = testDate.toLocaleDateString(undefined, { weekday: 'long' });
+    const bigDateElem = document.querySelector('.big-date');
+    if(bigDateElem && !bigDateElem.innerHTML.includes(weekday)) {
+      // just in case refine display but already 'Tuesday' is present, but ensure correct align
+      // make sure dynamic content matches.
+      bigDateElem.innerHTML = `<strong>12 February 2030</strong> <small>| ${weekday}</small>`;
+    } else if (bigDateElem && bigDateElem.innerHTML.includes('Tuesday') === false && weekday === 'Tuesday') {
+      // keeps consistent
+      bigDateElem.innerHTML = `<strong>12 February 2030</strong> <small>| ${weekday}</small>`;
+    }
+    
+    // Also update title metadata (optional, but nice)
+    document.title = "A'K · Wedding Countdown | Aung Thant Zin ♡ Khine Hsu Myat Thein";
+    
+    // Prepare dynamic greeting for marriage life information — also background particles? not needed but cute extra
+    // For extra touch: showing milestone message
+    const setMilestoneForLater = () => {
+      const wrapper = document.querySelector('.countdown-wrapper');
+      if(wrapper && document.getElementById('days').innerText !== '00') {
+        // nothing else, just ensure that if user shares page the countdown remains correct
+        // Also check if the target year is 2030, far away. Add additional note.
+        const messageElem = document.getElementById('dynamicMessage');
+        if(messageElem && document.getElementById('days').innerText > 1000) {
+          // but we already have messages, don't overrride
+        }
+      }
+    };
+    setTimeout(setMilestoneForLater, 100);
+  })();
+</script>
+</body>
+</html>
